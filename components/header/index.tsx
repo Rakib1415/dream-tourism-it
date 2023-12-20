@@ -1,5 +1,7 @@
-import { getLogoUrlPath } from "@/apiServices/menu";
+import { getAllMenuItem, getLogoUrlPath } from "@/apiServices/menu";
 import { BASE_URL } from "@/constant/constants";
+import { Menu } from "@/features/menu/types";
+import useMenus from "@/hooks/useMenus";
 import Image from "next/image";
 import Link from "next/link";
 import CurrencyMegaMenu from "./CurrencyMegaMenu";
@@ -7,8 +9,10 @@ import HeaderSearch from "./HeaderSearch";
 import MainMenu from "./MainMenu";
 import MobileMenu from "./MobileMenu";
 
-const Header = async ({ navbar }: { navbar: any }) => {
+const Header = async ({ navbar }: { navbar: boolean }) => {
   const data = await getLogoUrlPath();
+  const { menus }: { menus: Array<Menu> } = await getAllMenuItem();
+  const menuItems = useMenus(menus);
 
   return (
     <>
@@ -18,7 +22,6 @@ const Header = async ({ navbar }: { navbar: any }) => {
             <div className="col-auto header_logo_left_space">
               <div className="d-flex items-center">
                 <Link href="/" className="header-logo mr-20">
-                  (
                   <Image
                     style={{ width: "60px", height: "60px" }}
                     src={`${BASE_URL}/${data?.general_settings[0].favicon}`}
@@ -26,17 +29,16 @@ const Header = async ({ navbar }: { navbar: any }) => {
                     height={128}
                     alt="logo"
                   />
-                  )
                 </Link>
                 {/* End logo */}
                 {/* <HeaderSearch /> */}
-                {/* End logo */}({" "}
+                {/* End logo */}
                 <div className="header-menu">
                   <div className="header-menu__content">
                     <MainMenu style="text-dark-1" />
                   </div>
                 </div>
-                ){/* End header-menu */}
+                {/* End header-menu */}
               </div>
               {/* End d-flex */}
             </div>
@@ -84,7 +86,10 @@ const Header = async ({ navbar }: { navbar: any }) => {
                       aria-labelledby="offcanvasMenuLabel"
                       data-bs-scroll="true"
                     >
-                      <MobileMenu />
+                      <MobileMenu
+                        menuItems={menuItems}
+                        logoUrl={`${BASE_URL}/${data?.general_settings[0].favicon}`}
+                      />
                       {/* End MobileMenu */}
                     </div>
                   </div>

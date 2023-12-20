@@ -1,28 +1,26 @@
+"use client";
+import { ImenuItem } from "@/features/menu/types";
 import Image from "next/image";
 import Link from "next/link";
-
-import { BASE_URL } from "@/constant/constants";
-
-import { getAllMenuItem, getLogoUrlPath } from "@/apiServices/menu";
-import { Menu as MenuType } from "@/features/menu/types";
-import useMenus from "@/hooks/useMenus";
 import { Menu, Sidebar } from "react-pro-sidebar";
 import Social from "../common/social/Social";
 import ContactInfo from "./ContactInfo";
 import MobileMenuItem from "./MobileMenuItem";
 
-const MobileMenu = async () => {
-  const { menus }: { menus: Array<MenuType> } = await getAllMenuItem();
-  const menuItems = useMenus(menus);
-  const data = await getLogoUrlPath();
-
+const MobileMenu = ({
+  menuItems,
+  logoUrl,
+}: {
+  menuItems: ImenuItem[];
+  logoUrl: string;
+}) => {
   return (
     <>
       <div className="pro-header d-flex align-items-center justify-between border-bottom-light">
         <Link href="/">
           <Image
             style={{ width: "60px", height: "60px" }}
-            src={`${BASE_URL}/${data?.general_settings[0].favicon}`}
+            src={logoUrl}
             width={128}
             height={128}
             alt="logo"

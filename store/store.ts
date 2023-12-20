@@ -1,14 +1,17 @@
+import { apiSlice } from "@/features/api/apiSlice";
 import currencyReducer from "@/features/currency/currencySlice";
 import type { PreloadedState } from "@reduxjs/toolkit";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
+  [apiSlice.reducerPath]: apiSlice.reducer,
   currency: currencyReducer,
 });
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiSlice.middleware),
   devTools: process.env.NODE_ENV !== "production",
 });
 

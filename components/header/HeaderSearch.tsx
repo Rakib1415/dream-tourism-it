@@ -13,7 +13,6 @@ const HeaderSearch = () => {
   const router = useRouter();
 
   const handleSubmit = async () => {
-    "use server";
     const { menus }: { menus: Array<Menu> } = await getAllMenuItem();
     const destinations: ImenuItem[] =
       menus.find((item: Menu) => item.name === "Destinations")?.children || [];
